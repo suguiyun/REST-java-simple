@@ -1,11 +1,11 @@
 package com.inklabsfoundation.errors;
 
-public class ApiException extends RuntimeException {
+public class BadRequestException extends RuntimeException {
     public final String error;
     public final String data;
 
 
-    public ApiException(String error, String data, String message) {
+    public BadRequestException(String error, String data, String message) {
         super(message);
         this.error = error;
         this.data = data;

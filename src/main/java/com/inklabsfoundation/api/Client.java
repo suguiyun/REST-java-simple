@@ -1,7 +1,7 @@
 package com.inklabsfoundation.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.inklabsfoundation.errors.ApiException;
+import com.inklabsfoundation.errors.BadRequestException;
 import com.inklabsfoundation.utils.HashUtil;
 import com.inklabsfoundation.utils.JsonUtil;
 import okhttp3.*;
@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -19,7 +21,7 @@ public class Client {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     private static String apiEndpoint = "http://47.92.88.235:8083";
-    private static String host = "47.92.88.235";
+    private static String host = getHost();
 
     private static String key;
 
@@ -163,8 +165,8 @@ public class Client {
             var6 = null;
 
             try {
-                ApiException.ApiErrorResponse err = (ApiException.ApiErrorResponse) JsonUtil.readJson(body.string(), ApiException.ApiErrorResponse.class);
-                throw new ApiException(err.error, err.data, err.message);
+                BadRequestException.ApiErrorResponse err = (BadRequestException.ApiErrorResponse) JsonUtil.readJson(body.string(), BadRequestException.ApiErrorResponse.class);
+                throw new BadRequestException(err.error, err.data, err.message);
             } catch (Throwable var32) {
                 var6 = var32;
                 throw var32;
@@ -190,5 +192,16 @@ public class Client {
                 body.close();
             }
         }
+    }
+
+    static String getHost() {
+        String host = null;
+        try {
+            host = new URL(apiEndpoint).getHost();
+        } catch (MalformedURLException e) {
+            System.err.println("apiEndpoint error:" + apiEndpoint);
+            System.exit(0);
+        }
+        return host;
     }
 }

@@ -1,6 +1,6 @@
 package com.inklabsfoundation.api;
 
-import com.inklabsfoundation.errors.ApiException;
+import com.inklabsfoundation.errors.BadRequestException;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class Application {
             Client client = new Client(KEY, SECRET);
             Map<String,Object> timestamp = client.request(Map.class, null, "GET", "/v1/common/timestamp", null, null, null);
             Map<String,Object> accounts =client.request(Map.class, null, "GET", "/v1/user/accounts", null, null, null);
-        } catch (ApiException e) {
+        } catch (BadRequestException e) {
             System.err.println("error: " + e.error + ", msg: " + e.getMessage());
             e.printStackTrace();
         }
