@@ -20,7 +20,7 @@ public class Client {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static String apiEndpoint = "http://47.92.88.235:8083";
+    private static String apiEndpoint = "https://ex.zhigui.com";
     private static String host = getHost();
 
     private static String key;
@@ -105,6 +105,10 @@ public class Client {
         }
 
         payloadToSign = buildPayload(timestamp, uniqueId, payloadToSign);
+
+        //todo test
+        requestBuilder.addHeader("X-Real-IP", "193.238.36.154");
+        requestBuilder.addHeader("X-Forwarded-For", "193.238.36.154");
 
         requestBuilder.addHeader(HEADER_API_KEY, key);
         requestBuilder.addHeader(HEADER_API_SIGNATURE_METHOD, SIGNATURE_METHOD);
